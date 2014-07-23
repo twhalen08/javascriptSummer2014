@@ -21,17 +21,47 @@ and open the template in the editor.
         var myVar = 'hi'; //Not a global variable. var keyword shoukd be used
                 // for all variables, especially when you dont want them to be global. 
         myVar = 10; //Global Variable (can be accessed from outside)
-        if( myVar == 'hi')
+        var num =10,
+                str = "10",
+                bool = true;
+        
+        //if1
+        if( num === str) // "==" checks to see if myvar equals the strubg, "===" checks that the varable is equal and of the same type
         {
-            
+            console.log('true');
+        }
+        else
+        {
+            console.log('false');
+        }
+        //if2
+        if(num == str)
+        {
+            console.log('if2 is true');
+        }
+        else
+        {
+            console.log('if2 is false');
         }
         myVar2 = true;
         
         myVar3 = new Array();
+        myVar4 = []; //shorthand for array
         
         console.log(myVar);
         console.log(myVar2);
         console.log(myVar3);
+        for(var i = 1; i <= 10; i++)
+        {
+            console.log(i);
+        }
+        
+        var myArr = [];
+        myArr.push(0, 1, 2, 3, 4, 5);
+        console.log(myArr.length);
+        console.log(myArr);
+        console.log(myArr[4]);
+        
         
         </script>
         
