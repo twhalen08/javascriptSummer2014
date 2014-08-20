@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+    </head>
+    <body>
+        <div>TODO write content</div>
+        <form name="mainform" id="mainform" action="">
+        <fieldset>
+        <input id="emailbox" />
+        <input type="button" value="submit" onclick="emailValidate();" />
+        <div id="errorbox"></div>
+        </fieldset>
+        </form>
+        <script type="text/javascript">
+        
+            
+            //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
+            //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp
+            var reg1 = /[a-z]/;
+            var reg2 = new RegExp("[a-z]");
+            
+            
+
+            function emailValidate()
+            {
+                var emailRegex = /^[a-zA-Z]+[@]{1}[a-zA-Z]+[\.]{1}[a-zA-Z]{2,3}$/;
+                var emailEntry = document.getElementById("emailbox");
+                var errorPrompter = document.getElementById("errorbox");
+                if ( emailRegex.test(emailEntry.value) ) {
+                errorPrompter.innerHTML = emailEntry.value + " is good";
+            } else {
+                errorPrompter.innerHTML = emailEntry.value + " is bad" + emailRegex.test(emailEntry.value);
+                
+            }
+            }
+ 
+                        
+            
+        </script>
+    </body>
+</html>
