@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+  div {
+      background-color:blue;
+      opacity:0;
+  }
+</style>
+    </head>
+    <body>
+        <div id="div1">this div fades and moves</div>
+        <button onclick="btnFadeIn()" id="fadeIn" type="button">Fade In</button>
+        <button onclick="btnFadeOut()" id="fadeOut" type="button">Fade Out!</button>
+        <button id="move" type="button">Move!</button>
+        <script type="text/javascript">
+            var opacity = 0;
+            var div = document.getElementById("div1");
+            var opacityTimer;
+            var alertTimer = setTimeout(alertMsg, 5000);
+            var fadeInBtn = document.getElementById("fadeIn");
+            function alertMsg() 
+            {
+                alert('hi');
+                
+            }
+            
+            function fadeIn()
+            {
+                
+                opacity+= 10; 
+                div.style.opacity = (opacity / 100);
+                console.log(opacity / 100);
+                if (opacity > 100)
+                {
+                    clearInterval(opacityTimer);
+                }
+            }
+            function btnFadeIn()
+            {
+                opacity = 0;
+                opacityTimer = setInterval (fadeIn, 100);
+            }
+            
+            function btnFadeOut()
+            {
+                opacity = 100;
+                opacityTimer = setInterval(fadeOut, 100)
+            }
+            function fadeOut()
+            {
+                                
+                opacity-= 10; 
+                div.style.opacity = (opacity / 100);
+                console.log(opacity / 100);
+                if (opacity < 0)
+                {
+                    clearInterval(opacityTimer);
+                }
+            }
+            
+            function zoomZoom()
+            {
+                
+            }
+            
+        </script>
+        
+        
+        
+    </body>
+</html>
