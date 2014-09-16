@@ -1,16 +1,79 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html>
     <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title> Week 6 Lab </title>
+        <style type="text/css">
+            .contentBox {
+                width: 300px;
+                margin: 1em;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        </style>
     </head>
     <body>
-        <div>TODO write content</div>
+
+	<div id="content" class="contentBox"></div>
+
+	<input type="button" id="showResults" value="Show Results" />
+
+	<script type="text/javascript">
+
+		 //http://canvas.site40.net/demopage.html	
+		// XML HTTP Request
+		var xhr = new XMLHttpRequest(); // create a new xhtml http request
+		var content = document.getElementById('content');// get the content div element  
+		var showResults = document.getElementById('showResults');  // get the show results button element
+		var url = "demo.php?page="; // get the php script where the content is stored
+                var step = 1; //this variable is used to chose which content option is displayed. 
+                
+		
+                showResults.addEventListener('click',makeAJAXCall); //add the click event and wire it to the ajax call function
+		
+		function callback() { //this function displays the requested content
+			var response = xhr.responseText; //puts the content into a variable called resopnse
+						
+			content.innerHTML += response;// puts the requested content into the content div. 
+                        step++;
+                        
+
+		}
+		
+		
+		xhr.onreadystatechange = function() { //Checks to make sure the page is ready to display the content
+									
+		   if (xhr.readyState==4 && xhr.status==200) {  //if the page has completed loading
+			callback();  //run the callback function
+		   } 
+		};  
+		
+		
+                function makeAJAXCall(){ // this function calls up the content from the php script
+                    if ( step < 5 ) { //there are 4 pieces of content for this demo              
+                        xhr.open('GET', url+step, true);  // make a get request from demo.php addressing the appropriate content. 
+                        xhr.send();   //send the get request
+                    }
+                }
+		
+		
+                
+		window.addEventListener('load', makeAJAXCall);
+
+
+                function scrollCheck() {
+			if ( (window.innerHeight + window.scrollY) >= document.body.offsetHeight) {				
+				makeAJAXCall();
+			}
+		}
+		
+		window.addEventListener("scroll", scrollCheck);
+		
+		
+		
+		 
+
+		
+		
+	</script>
     </body>
 </html>

@@ -26,30 +26,13 @@ mouse cords into the array.
  */
 
 
-var userdata = [];
+var userdata = {};
 
-userdata.push({ "screenHeight" : window.innerHeight});
-userdata.push({ "screenWidth" : window.innerWidth});
-userdata.push({ "userAgent" : navigator.userAgent});
-userdata.push({ "title" : document.title});
-    
 function showResults() {
     console.clear();
     console.log(userdata);
 }
-            function trackMouse(e) {
-               
-                    userdata.push({ "mouseX" : e.clientX});
-                    userdata.mouseX.push(e.clientX);
-                    console.log(e.clientX);
-                
-                
-                
-               
-                    document.removeEventListener('mousemove', trackMouse);
-                }
-            document.addEventListener('mousemove', trackMouse);
 
-//var results = document.getElementById('showResults');
+var results = document.getElementById('showResults');
 
-//results.addEventListener("click", showResults);
+results.addEventListener("click", showResults);
