@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Lab 9</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <style type="text/css">
+            canvas {
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+    <body>
+        
+        <canvas id="race" width="750" height="150"></canvas>
+        <br />
+        <button onclick="main()" id="play">Play</button>
+        
+        <script type="text/javascript">
+            /*
+                We will be creating a canvas race game. We will have two teams, one red and the other blue, that will race to the finish line.
+
+                Using Canvas create two rectangles, one red and the other blue. They should be the same width and height. 
+                When moving the rectangles make sure to generate a random number to move the x position of each rectangle. 
+                The minimum should always be greater than zero. It should be called twice to get a unique number for each rectangle. 
+                Once the rectangle reaches the finish line, display the winner. A play button should appear to reset the race. 
+                Once the race is started the play button should be hidden again.
+             */
+            
+            var canvas = document.getElementById("race");
+            var context = canvas.getContext("2d");
+            var bluePos = 100;
+            var redPos = 100;
+            var redWon = false;
+            var blueWon = false;
+            function reset() { // resets the variables that control position and win/loss
+                redWon = false;
+                blueWon = false;
+                bluePos = 100;
+                redPos = 100; 
+            }
+            function main() { //used to start the game
+                reset();
+            redText();
+            blueText();
+            go();
+            }
+            function finishLine() { //a function that draws a line at 700,150 - 700,0
+                context.beginPath();
+                context.moveTo(700,150);
+                context.lineTo(700, 0);
+                context.stroke(); 
+            }
+
+            function blueText(){
+                context.font = 'italic 12pt Calibri';
+                context.fillStyle = "blue";
+                context.fillText('BLUE', 10, 100);
+                if (blueWon === true) {
+                    context.fillText('BLUE WINS!', 10, 100);
+                }
+
+                context.fillRect(bluePos, 90, 50, 10);               
+            }
+
+            function redText() {
+                context.font = 'bold 12pt Arial Black';
+                context.fillStyle = "red";
+                
+                context.fillText('RED',10, 50);
+                if (redWon === true) {
+                    context.fillText('RED WINS!',10, 50);
+                }
+                context.fillRect(redPos, 40, 50, 10);
+            }
+            redText();
+            blueText();
+            finishLine();
+            function go() {
+                moveRed();
+                redText();
+                moveBlue();
+                blueText();
+                finishLine();
+                if (redWon === false && blueWon === false)
+                {
+                    setTimeout(go, 100);
+                }
+                
+            }
+            function drawClear(){
+                context.clearRect(0,0,canvas.width,canvas.height);
+            }
+            
+            function moveRed() {
+                if (redPos < 650) {
+                    context.fillStyle = "red";
+                    redPos += randNum(20);
+                    drawClear();
+                    context.fillRect(redPos, 40, 50, 10);
+                }
+                if (redPos >= 650 && blueWon === false)
+                {
+                    redWon = true;
+                }
+                
+            }
+            function moveBlue() {
+                if (bluePos < 650) {
+                    context.fillStyle = "blue";
+                    bluePos += randNum(20);
+                    context.fillRect(bluePos, 90, 50, 10); 
+                }
+                if (bluePos >= 650 && redWon === false)
+                {
+                    blueWon = true;
+                }
+                
+            }
+            
+           function randNum(max) {
+               return Math.ceil(Math.random()*max) + 1;
+           }
+        </script>
+    </body>
+</html>
