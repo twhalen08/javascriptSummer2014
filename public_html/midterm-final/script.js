@@ -13,9 +13,14 @@
     var descriptionErr = document.getElementById("description_err");
     var btnSaveData = document.getElementById("savedata");
     var tableData = document.getElementById("tabledata");
+    var compiledResults = "";
     
-    
-
+function clearFields() {
+    fullName.innerHTML = "";
+    email.innerHTML = "";
+    description.innerHTML = "";
+    phone.innerHTML = "";
+}
 function SpaceAlphaValidate( str ) {
         var alphaRegex = /[a-zA-Z ]+/;
         return alphaRegex.test(str);			
@@ -63,6 +68,28 @@ if (!phone.value.length) {
 }
 
 description.value = strip_HTML(description.value);
+appendToLocalStorage();
+}
+
+
+
+
+function appendToLocalStorage()
+{
     
     
+var insert = { 'fullname': fullName.value, 'phone': phone.value, 'email': email.value, 'description': description.value };
+    localStorage.setItem('inserts', JSON.stringify(insert));
+    var getInserts = localStorage.getItem('inserts');
+    console.log(JSON.parse(getInserts));
+    
+}
+
+window.onload = function displayTable()
+{
+    var getInserts = localStorage.getItem('inserts');
+    console.log(getInserts);
+    var parsedInserts = JSON.parse(getInserts);
+    console.log(parsedInserts.fullname);
+    tableData.innerHTML = "Hello";
 }
