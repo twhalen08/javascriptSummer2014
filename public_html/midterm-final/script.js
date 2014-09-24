@@ -130,3 +130,8 @@ function deleteLastRow(){
     localStorage.setItem('inserts', JSON.stringify(globalArr)); // push the global array to local storage. 
     displayTable(); //redisplay the table.
 }
+
+
+
+
+//end of file
