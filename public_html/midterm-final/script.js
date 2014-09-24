@@ -12,45 +12,48 @@
     var description = document.getElementById("description");
     var descriptionErr = document.getElementById("description_err");
     var btnSaveData = document.getElementById("savedata");
-    var tableData = document.getElementById("tabledata");
-    var compiledResults = "";
+    var tableData = document.getElementById("tableData");
+    var mainform = document.getElementById("mainform");
+    var globalArr = [];
+    var parsedInserts = [];
     
 function clearFields() {
-    fullName.innerHTML = "";
-    email.innerHTML = "";
-    description.innerHTML = "";
-    phone.innerHTML = "";
+mainform.reset(); //reset fields
 }
 function SpaceAlphaValidate( str ) {
-        var alphaRegex = /[a-zA-Z ]+/;
-        return alphaRegex.test(str);			
+        var alphaRegex = /[a-zA-Z ]+/; //a-z only
+        return alphaRegex.test(str);	//returns true if valid		
 }
 function phoneValidate(str){
     var phoneRegex = /^[2-9]\d{2}-\d{3}-\d{4}$/;
-    return phoneRegex.test(str);
+    return phoneRegex.test(str);//returns true if valid		
 }
 
 function emailValidate(str) {
      var emailRegex = /^[a-zA-Z]+[@]{1}[a-zA-Z]+[\.]{1}[a-zA-Z]{2,3}$/;
-     return emailRegex.test(str);
+     return emailRegex.test(str);//returns true if valid		
 }
 
-function strip_HTML(str) {
+function strip_HTML(str) { // strips html from field
         var findHtml = /<(.|\n)*?>/gi;
         return str.replace(findHtml,"");
 }
 
 function submitForm()
 {
-if(!fullName.value.length) {
-    fullNameErr.innerHTML = "Full Name is too short! Please enter a valid full name";
+if(!fullName.value.length) { //if the fullname is blank
+    fullNameErr.innerHTML = "Full Name is too short! Please enter a valid full name"; //warn the user
     
-} else if (SpaceAlphaValidate(fullName.value) === false) {
-    fullNameErr.innerHTML = "Full Name contains invalid characters. Only alph characters and spaces allowed!";
+} else if (SpaceAlphaValidate(fullName.value) === false) { //if the fullname is invalid
+    fullNameErr.innerHTML = "Full Name contains invalid characters. Only alph characters and spaces allowed!";//warn the user
 } else {
-    fullNameErr.innerHTML = "";
+    fullNameErr.innerHTML = "";//otherwise clear warning
 }
+       //the comments above in this function apply
+       //to all of the ifs below. 
 
+       
+       
 if (!email.value.length) {
     emailErr.innerHTML = "Email is too short! Please enter a valid email address.";
 } else if (emailValidate(email.value) === false) {
@@ -66,30 +69,64 @@ if (!phone.value.length) {
 } else {
     phoneErr.innerHTML = "";
 }
-
 description.value = strip_HTML(description.value);
-appendToLocalStorage();
+if (phoneValidate(phone.value) === true && emailValidate(email.value) === true && SpaceAlphaValidate(fullName.value) === true)// if everything is OK
+{
+    appendToLocalStorage();//add the result to local storage
+    displayTable();//update the table
+    clearFields();//clear the fields. 
+}
+
 }
 
 
 
 
-function appendToLocalStorage()
+function appendToLocalStorage() //add result
 {
-    
-    
-var insert = { 'fullname': fullName.value, 'phone': phone.value, 'email': email.value, 'description': description.value };
-    localStorage.setItem('inserts', JSON.stringify(insert));
-    var getInserts = localStorage.getItem('inserts');
-    console.log(JSON.parse(getInserts));
+    globalArr.push({ //add result to the array
+        'fullname': fullName.value, 
+        'phone': phone.value, 
+        'email': email.value, 
+        'description': description.value
+    });
+    localStorage.setItem('inserts', JSON.stringify(globalArr)); //insert array into localstorage
+    var getInserts = localStorage.getItem('inserts'); //get the localstorage data and store it in an array
+}
+
+function displayTable()
+{
+    var getInserts = localStorage.getItem('inserts'); // pull the data from localstorage
+    parsedInserts = JSON.parse(getInserts); //parse the data so its usable 
+    var nm = "";
+    var number = 1;
+    for(i in parsedInserts) //read into array
+    {
+        nm += ( "<tr><td>" + number + "</td><td>" +  parsedInserts[i].fullname + "</td><td>" + parsedInserts[i].phone + "</td><td>" + parsedInserts[i].email + "</td><td>" + parsedInserts[i].description + "</td></tr>");  
+    number++;// add the html for a table row to the string variable. 
+    }
+    tableData.innerHTML = nm;//output the whole table to the screen
     
 }
 
-window.onload = function displayTable()
-{
-    var getInserts = localStorage.getItem('inserts');
-    console.log(getInserts);
-    var parsedInserts = JSON.parse(getInserts);
-    console.log(parsedInserts.fullname);
-    tableData.innerHTML = "Hello";
+function onPageLoad(){
+    if (localStorage.length){ //if there are items in localstorage
+    var pullInserts = localStorage.getItem('inserts'); //pull everything stored in inserts
+    globalArr = JSON.parse(pullInserts); //parse into something usable. 
+    }
+    else {
+        console.log("empty"); //just a console warning telling me that the localstorage is empty
+    }
+    displayTable();// call the display table func
+}
+
+function localStorageClear(){ //clears local storage
+    localStorage.clear(); //clears local storage
+    globalArr.length = 0; //clears the global array so it doesn't accidentally repopulate localstorage
+    displayTable(); // display the table again
+}
+function deleteLastRow(){
+    globalArr.splice(- 1, 1); //delete the last row in the global array
+    localStorage.setItem('inserts', JSON.stringify(globalArr)); // push the global array to local storage. 
+    displayTable(); //redisplay the table.
 }
